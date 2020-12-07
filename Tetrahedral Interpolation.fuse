@@ -1,0 +1,347 @@
+--[[--
+---------------------------------------------------------------------- 
+MIT License
+
+Copyright (c) 2020 calvinsilly
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+----------------------------------------------------------------------
+--]]--
+
+FuRegisterClass("TetrahedralInterpolation", CT_Tool, {
+    REGS_Name = "Tetrahedral Interpolation",
+    REGS_Category = "Color",
+    REGS_OpIconString = "temp",
+    REGS_OpDescription = "Compresses the gamut for out of gamut problems",
+    REGS_Company = "Ember Light",
+    REG_Fuse_NoEdit = false,
+    REG_Fuse_NoReload = false,
+    REG_SupportsDoD = false,
+})
+
+function Create()
+
+    --RED
+    InRR = self:AddInput("RR", "RR", {
+        LINKS_Name = "Red",
+        INP_Default = 1,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 0,
+        IC_ControlGroup = 2,
+    })
+
+    InRG = self:AddInput("RG", "RG", {
+        INP_Default = 0,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 1,
+        IC_ControlGroup = 2,
+    })
+
+    InRB = self:AddInput("RB", "RB", {
+        INP_Default = 0,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 2,
+        IC_ControlGroup = 2,
+    })
+
+    --Green
+    InGR = self:AddInput("GR", "GR", {
+        LINKS_Name = "Green",
+        INP_Default = 0,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 0,
+        IC_ControlGroup = 3,
+    })
+
+    InGG = self:AddInput("GG", "GG", {
+        INP_Default = 1,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 1,
+        IC_ControlGroup = 3,
+    })
+
+    InGB = self:AddInput("GB", "GB", {
+        INP_Default = 0,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 2,
+        IC_ControlGroup = 3,
+    })
+
+    --Blue
+    InBR = self:AddInput("BR", "BR", {
+        LINKS_Name = "Blue",
+        INP_Default = 0,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 0,
+        IC_ControlGroup = 4,
+    })
+
+    InBG = self:AddInput("BG", "BG", {
+        INP_Default = 0,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 1,
+        IC_ControlGroup = 4,
+    })
+
+    InBB = self:AddInput("BB", "BB", {
+        INP_Default = 1,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 2,
+        IC_ControlGroup = 4,
+    })
+
+    --Cyan
+    InCR = self:AddInput("CR", "CR", {
+        LINKS_Name = "Cyan",
+        INP_Default = 0,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 0,
+        IC_ControlGroup = 5,
+    })
+
+    InCG = self:AddInput("CG", "CG", {
+        INP_Default = 1,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 1,
+        IC_ControlGroup = 5,
+    })
+
+    InCB = self:AddInput("CB", "CB", {
+        INP_Default = 1,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 2,
+        IC_ControlGroup = 5,
+    })
+
+    --Magenta
+    InMR = self:AddInput("MR", "MR", {
+        LINKS_Name = "Magenta",
+        INP_Default = 1,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 0,
+        IC_ControlGroup = 6,
+    })
+
+    InMG = self:AddInput("MG", "MG", {
+        INP_Default = 0,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 1,
+        IC_ControlGroup = 6,
+    })
+
+    InMB = self:AddInput("MB", "MB", {
+        INP_Default = 1,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 2,
+        IC_ControlGroup = 6,
+    })
+
+    --Yellow
+    InYR = self:AddInput("YR", "YR", {
+        LINKS_Name = "Yellow",
+        INP_Default = 1,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 0,
+        IC_ControlGroup = 7,
+    })
+
+    InYG = self:AddInput("YG", "YG", {
+        INP_Default = 1,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 1,
+        IC_ControlGroup = 7,
+    })
+
+    InYB = self:AddInput("YB", "YB", {
+        INP_Default = 0,
+        INPID_InputControl = "ColorControl",
+        CLRC_ColorSpace = 0,
+        LINKID_DataType = "Number",
+        IC_ControlID = 2,
+        IC_ControlGroup = 7,
+    })
+       
+    InImage = self:AddInput("Input", "Input", {
+        LINKID_DataType = "Image",
+        LINK_Main = 1,
+    })
+
+    OutImage = self:AddOutput("Output", "Output", {
+       LINKID_DataType = "Image",
+       LINK_Main = 1,
+    })
+end
+ 
+function Process(req)
+   
+    local src = InImage:GetValue(req)
+    --local dst = Image({IMG_Like = src})
+    local dst = Image{ IMG_Like = src, IMG_DeferAlloc = true }
+
+    if not req:IsPreCalc() then
+
+        ---====  PIXEL PROCESS ===---
+       
+        --This calls on our kernel to process the image we created.
+        local node = DVIPComputeNode(req, "SolidKernel", SolidKernel, "SolidParams", SolidParams)
+     
+        local params = node:GetParamBlock(SolidParams)
+        --This gets the values of our sliders from the control panel.
+        params.red[0] = InRR:GetValue(req).Value
+        params.red[1] = InRG:GetValue(req).Value
+        params.red[2] = InRB:GetValue(req).Value
+
+        params.grn[0] = InGR:GetValue(req).Value
+        params.grn[1] = InGG:GetValue(req).Value
+        params.grn[2] = InGB:GetValue(req).Value
+
+        params.blu[0] = InBR:GetValue(req).Value
+        params.blu[1] = InBG:GetValue(req).Value
+        params.blu[2] = InBB:GetValue(req).Value
+
+        params.cyn[0] = InCR:GetValue(req).Value
+        params.cyn[1] = InCG:GetValue(req).Value
+        params.cyn[2] = InCB:GetValue(req).Value
+
+        params.mag[0] = InMR:GetValue(req).Value
+        params.mag[1] = InMG:GetValue(req).Value
+        params.mag[2] = InMB:GetValue(req).Value
+
+        params.yel[0] = InYR:GetValue(req).Value
+        params.yel[1] = InYG:GetValue(req).Value
+        params.yel[2] = InYB:GetValue(req).Value
+
+        params.srcCompOrder = src:IsMask() and 1 or 15
+     
+        node:SetParamBlock(params)
+     
+        node:AddInput("src", src)
+        node:AddOutput("dst", dst)
+     
+        local ok = node:RunSession(req)
+     
+        if not ok then
+            dst = nil
+        end
+
+    end
+ 
+    OutImage:Set(req, dst)
+end
+
+--These are the parameters that we need access to in our kernel.
+SolidParams = [[
+    int srcCompOrder;
+    float red[3];
+    float grn[3];
+    float blu[3];
+    float cyn[3];
+    float mag[3];
+    float yel[3];
+]]
+ 
+--This is the GPU kernel, all of the image algorithms happen here.
+SolidKernel = [[
+    __KERNEL__ void SolidKernel(
+        __CONSTANTREF__ SolidParams *params,
+        __TEXTURE2D__ src,
+        __TEXTURE2D_WRITE__ dst
+    )
+    {
+        DEFINE_KERNEL_ITERATORS_XY(x, y);
+        float4 In = _tex2DVecN(src, x, y, params->srcCompOrder);
+        float3 Color;
+
+        float r = In.x;
+        float g = In.y;
+        float b = In.z;
+
+        float3 wht = to_float3(1.f, 1.f, 1.f);
+        float3 red = to_float3_v(params->red);
+        float3 grn = to_float3_v(params->grn);
+        float3 blu = to_float3_v(params->blu);
+        float3 cyn = to_float3_v(params->cyn);
+        float3 mag = to_float3_v(params->mag);
+        float3 yel = to_float3_v(params->yel);
+ 
+        if (r>g) {
+            //r>g>b
+            if (g>b){
+                Color = r*red + g*(yel-red) + b*(wht-yel);
+            }
+            //r>b>g
+            else if (r>b){
+                Color = r*red + g*(wht-mag) + b*(mag-red);
+            }
+            //b>r>g
+            else{
+                Color = r*(mag-blu) + g*(wht-mag) + b*blu;
+            }
+        } else {    
+            //b>g>r  
+            if (b>g){
+                Color = r*(wht-cyn) + g*(cyn-blu) + b*blu;
+            }
+            //g>b>r
+            else if (b>r){
+                Color = r*(wht-cyn) + g*grn + b*(cyn-grn);
+            }
+            //g>r>b
+            else{
+                Color = r*(yel-grn) + g*grn + b*(wht-yel);
+            }
+        }
+
+        _tex2DVec4Write(dst, x, y, to_float4(Color.x, Color.y, Color.z, In.w));
+    }
+]]
