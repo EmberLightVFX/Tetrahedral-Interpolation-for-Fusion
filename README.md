@@ -10,14 +10,14 @@ I just want to be able to share these for everyone to use. So I don't expect any
 
 Video demonstration: https://www.youtube.com/watch?v=8kBkYEiAkIw
 
-#### Information
+### Information
 
 Color transformations using tetrahedral interpolation, includes both an macro (sadly slow) and a DCTL fuse (fast).
 Code comes from https://github.com/calvinsilly/Tetrahedral-Interpolation
 HSV code comes from https://github.com/TheDIGuy/TetraInterp-DCTL
 
 
-#### To install this fuse for Blackmagic Fusion Studio, copy the file to your UserData Path Map folder:
+### To install this fuse for Blackmagic Fusion Studio, copy the file to your UserData Path Map folder:
 
 Linux:
   ~/.fusion/BlackmagicDesign/Fusion/Fuses
@@ -29,7 +29,7 @@ Windows:
   %appdata%\Blackmagic Design\Fusion\Fuses
 
 
-#### For the Fusion page in Resolve Lite or Resolve Studio use these UserData folders:
+### For the Fusion page in Resolve Lite or Resolve Studio use these UserData folders:
 
 Linux: 
   ~/.local/share/DaVinciResolve/Fusion/Fuses
@@ -42,4 +42,4 @@ Windows:
   
   
   
-##### If you want to install the macro, place the file in the Macro folder instead of the Fuse folder
+#### If you want to install the macro, place the file in the Macro folder instead of the Fuse folder
